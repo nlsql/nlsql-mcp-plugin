@@ -1,0 +1,48 @@
+{
+  "name": "nlsql",
+  "version": "1.0.0",
+  "description": "Connect your database to NLSQL: a guided wizard turns your schema and KPIs into an NLSQL data source, so people can query it in plain English.",
+  "author": {
+    "name": "NLSQL",
+    "url": "https://nlsql.com"
+  },
+  "homepage": "https://nlsql.com",
+  "repository": "https://github.com/nlsql/nlsql-mcp-plugin",
+  "license": "MIT",
+  "keywords": [
+    "nlsql",
+    "text-to-sql",
+    "natural-language",
+    "sql",
+    "database",
+    "mcp"
+  ],
+  "skills": "./skills/",
+  "mcpServers": {
+    "nlsql": {
+      "type": "streamable-http",
+      "url": "https://mcp.nlsql.com/mcp"
+    }
+  },
+  "interface": {
+    "displayName": "NLSQL",
+    "shortDescription": "Turn your database into a plain-English data source",
+    "longDescription": "Configure an NLSQL data source without leaving the chat. The wizard reads the schema you paste, lets you pick tables, columns and joins, captures your KPIs, top-N rankings, filters and calculated metrics in plain language, then publishes the configuration to your NLSQL account. Optionally add each column's known values to make answers more accurate. Sign in with your NLSQL account.",
+    "developerName": "NLSQL",
+    "category": "Productivity",
+    "capabilities": [
+      "Read",
+      "Write"
+    ],
+    "websiteURL": "https://nlsql.com",
+    "privacyPolicyURL": "https://nlsql.com/privacy_policy",
+    "termsOfServiceURL": "https://nlsql.com/terms_of_use",
+    "defaultPrompt": [
+      "Set up my PostgreSQL database in NLSQL",
+      "Continue my NLSQL data source setup",
+      "Add the distinct values for my status columns to NLSQL"
+    ],
+    "composerIcon": "./assets/logo.png",
+    "logo": "./assets/logo.png"
+  }
+}

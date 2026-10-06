@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "nlsql": {
+      "type": "http",
+      "url": "https://mcp.nlsql.com/mcp"
+    }
+  }
+}

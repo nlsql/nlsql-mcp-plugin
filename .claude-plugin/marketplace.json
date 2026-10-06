@@ -1,0 +1,17 @@
+{
+  "name": "nlsql",
+  "owner": {
+    "name": "NLSQL",
+    "url": "https://nlsql.com"
+  },
+  "metadata": {
+    "description": "Official NLSQL plugin for Claude Code."
+  },
+  "plugins": [
+    {
+      "name": "nlsql",
+      "source": "./",
+      "description": "Set up an NLSQL natural-language-to-SQL data source from your database schema."
+    }
+  ]
+}

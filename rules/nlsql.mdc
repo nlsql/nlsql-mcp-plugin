@@ -1,0 +1,15 @@
+---
+description: How to drive the NLSQL configuration wizard (nlsql MCP tools). Apply when calling any nlsql tool or setting up an NLSQL data source.
+alwaysApply: false
+---
+
+When using the `nlsql` MCP tools:
+
+- Start or resume with `nlsql_config_wizard` and no data. Then act on each response's `next_action` straight away, and call the wizard again with exactly the keys its `after` field names.
+- Cursor has no `AskUserQuestion` tool. For `ask_user_question` and `show_then_ask`, show the options as a numbered list, say if several may be picked (`multiselect`), wait for the reply, and send back the exact option text.
+- For `interpret` steps, do the extraction yourself and return the JSON shape the `message` asks for.
+- The schema step needs schema only, never table data. If you offer to run the dump command in the terminal, ask first and never echo database passwords.
+- When the wizard returns `final_response`, call `publish_datasource` immediately.
+- Column values are optional and come after publishing: `get_column_values`, then `publish_column_values`.
+
+See the `nlsql` skill for the full workflow.

@@ -22,7 +22,12 @@ codex = json.loads((ROOT / ".codex-plugin" / "plugin.json").read_text())
 
 plugin = {"$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json"}
 plugin.update({k: codex[k] for k in IDENTITY if k in codex})
-plugin["extensions"] = {"com.openai": {"interface": codex["interface"]}}
+# The Codex format keeps the listing at its root and review/publication under
+# extensions.com.openai. The portable format puts all of them under extensions.com.openai.
+plugin["extensions"] = {"com.openai": {
+    "interface": codex["interface"],
+    **codex.get("extensions", {}).get("com.openai", {}),
+}}
 
 mcp = {
     "$schema": "https://agent-plugins.org/schemas/1.0.0/mcp.schema.json",

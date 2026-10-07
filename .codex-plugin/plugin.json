@@ -1,6 +1,6 @@
 {
   "name": "nlsql",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Connect your database to NLSQL: a guided wizard turns your schema and KPIs into an NLSQL data source, so people can query it in plain English.",
   "author": {
     "name": "NLSQL",
@@ -26,23 +26,88 @@
   },
   "interface": {
     "displayName": "NLSQL",
-    "shortDescription": "Turn your database into a plain-English data source",
-    "longDescription": "Configure an NLSQL data source without leaving the chat. The wizard reads the schema you paste, lets you pick tables, columns and joins, captures your KPIs, top-N rankings, filters and calculated metrics in plain language, then publishes the configuration to your NLSQL account. Optionally add each column's known values to make answers more accurate. Sign in with your NLSQL account.",
+    "shortDescription": "Text-to-SQL data source setup",
+    "longDescription": "NLSQL turns a company database into a data source that people can query in plain English. This plugin sets that data source up for you in the chat, so you don't have to fill in the NLSQL configuration forms by hand.\n\nWhat it does: you paste your database schema (the output of a schema-only dump command the plugin gives you for MySQL, PostgreSQL, MSSQL, BigQuery, Snowflake, Amazon Redshift, SQLite or CQL). The plugin reads the tables, columns and joins, lets you choose what to include, and captures your KPIs, top-N rankings, filters and calculated metrics from plain-language descriptions. It then publishes the configuration to your NLSQL account. Afterwards you can add the known values of category columns to make answers more accurate.\n\nWho it is for: data, BI and engineering teams setting up NLSQL for their organisation. An NLSQL account is required; you sign in with it the first time you use the plugin.\n\nLimitations: the plugin never connects to your database and never asks for credentials or table data. It works only from the schema text you provide. It configures NLSQL but does not run queries or answer questions about your data; that happens in NLSQL's own apps once the data source is published. One data source is set up at a time per account.",
     "developerName": "NLSQL",
-    "category": "Productivity",
+    "category": "Developer Tools",
     "capabilities": [
-      "Read",
-      "Write"
+      "Read a pasted database schema",
+      "Configure an NLSQL data source",
+      "Publish a data source to NLSQL",
+      "Add known column values"
     ],
     "websiteURL": "https://nlsql.com",
+    "supportURL": "https://nlsql.com/contacts",
     "privacyPolicyURL": "https://nlsql.com/privacy_policy",
     "termsOfServiceURL": "https://nlsql.com/terms_of_use",
     "defaultPrompt": [
       "Set up my PostgreSQL database in NLSQL",
       "Continue my NLSQL data source setup",
-      "Add the distinct values for my status columns to NLSQL"
+      "Add the known values of my status columns to NLSQL"
     ],
     "composerIcon": "./assets/logo.png",
     "logo": "./assets/logo.png"
+  },
+  "extensions": {
+    "com.openai": {
+      "review": {
+        "test_cases": {
+          "positive": [
+            {
+              "description": "Step 1 of 5, run in order in one conversation. Start a new data source setup and get the schema command.",
+              "prompt": "Set up my PostgreSQL database in NLSQL. Call the data source review_shop.",
+              "tools_triggered": "nlsql_config_wizard",
+              "expected_behavior": "Records the name review_shop and PostgreSQL as the database type, then shows a schema-only command (pg_dump --schema-only -U <username> -d <database_name>) and asks the user to paste its output."
+            },
+            {
+              "description": "Step 2 of 5. Read the pasted schema into tables, columns and joins.",
+              "prompt": "Here is the output of that command.",
+              "file_attachment_urls": [
+                "https://raw.githubusercontent.com/nlsql/nlsql-mcp-plugin/main/review/sample-schema.sql"
+              ],
+              "tools_triggered": "nlsql_config_wizard",
+              "expected_behavior": "Shows an overview of four tables (customers, products, orders, order_items) with their columns, and the joins orders.customer_id to customers.id, order_items.order_id to orders.id and order_items.product_id to products.id. Then asks the user to confirm it."
+            },
+            {
+              "description": "Step 3 of 5. Choose tables, columns, joins and the default date column.",
+              "prompt": "That's correct. Include every table and every column, keep all joins, and use orders.created_at as the default date column.",
+              "tools_triggered": "nlsql_config_wizard",
+              "expected_behavior": "Saves the selection across the wizard's table, column, join and date-column steps, then asks the user to describe their KPIs in plain language."
+            },
+            {
+              "description": "Step 4 of 5. Capture KPIs, skip the optional steps, and publish the data source.",
+              "prompt": "Total Revenue is the sum of orders.amount and Order Count is the count of orders.id. Skip the other optional steps and publish it.",
+              "tools_triggered": "nlsql_config_wizard, publish_datasource",
+              "expected_behavior": "Shows the two KPIs for confirmation, skips top arguments, filters, complex and column arguments, shows the final overview and asks Publish or Cancel. After Publish it reports: DataSource: 'review_shop' successfully published to NLSQL."
+            },
+            {
+              "description": "Step 5 of 5. Add the known values of a category column to the published data source.",
+              "prompt": "Add these known values for orders.status to NLSQL: pending, paid, shipped, cancelled.",
+              "tools_triggered": "get_column_values, publish_column_values",
+              "expected_behavior": "Shows the four values under orders.status and asks for confirmation. After Confirm it reports: Column values successfully published to NLSQL."
+            }
+          ],
+          "negative": [
+            {
+              "description": "Database credentials: the plugin never connects to a database, so it should decline to use them and explain it works from schema text only.",
+              "prompt": "Connect to my production database at db.example.com with user admin and password hunter2 and import all customer records into NLSQL."
+            },
+            {
+              "description": "Running queries: the plugin configures NLSQL and cannot run SQL or return table data, so it should explain that instead of calling a tool.",
+              "prompt": "Run SELECT * FROM orders WHERE amount > 100 on my database and show me the results."
+            },
+            {
+              "description": "Deleting data sources: the plugin has no delete capability, so it should say so and not call any tool.",
+              "prompt": "Delete all of my NLSQL data sources."
+            }
+          ]
+        },
+        "commerce": false,
+        "commerce_description": "This plugin does not sell products or process payments."
+      },
+      "publication": {
+        "release_notes": "Initial release: guided NLSQL data source setup from a database schema, publishing, and known column values."
+      }
+    }
   }
 }

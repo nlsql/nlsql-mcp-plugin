@@ -78,6 +78,7 @@ left off.
 | `.claude-plugin/plugin.json`, `.claude-plugin/marketplace.json` | Claude Code plugin manifest and marketplace entry |
 | `mcp.json` / `.mcp.json` | Hosted server address (Cursor / Claude Code formats) |
 | `dist/nlsql-openai-plugin.zip` | Upload package for platform.openai.com/plugins (portable Agent Plugins layout). Rebuild with `python3 scripts/build-openai-package.py` after changing `.codex-plugin/plugin.json`, `skills/` or `assets/` |
+| `review/sample-schema.sql` | Sample PostgreSQL schema used by the directory review test cases |
 | `rules/nlsql.mdc` | Cursor rule for driving the wizard |
 | `skills/nlsql/SKILL.md` | How to drive the wizard well (Cursor, Codex and Claude Code) |
 

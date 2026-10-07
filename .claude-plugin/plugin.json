@@ -1,6 +1,6 @@
 {
   "name": "nlsql",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Connect your database to NLSQL: a guided wizard turns your schema and KPIs into an NLSQL data source, so people can query it in plain English.",
   "homepage": "https://nlsql.com",
   "repository": "https://github.com/nlsql/nlsql-mcp-plugin",

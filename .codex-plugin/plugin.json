@@ -1,6 +1,6 @@
 {
   "name": "nlsql",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Connect your database to NLSQL: a guided wizard turns your schema and KPIs into an NLSQL data source, so people can query it in plain English.",
   "author": {
     "name": "NLSQL",
@@ -102,6 +102,7 @@
             }
           ]
         },
+        "demo_recording_url": "https://youtu.be/6Rkg0gVO3aE",
         "commerce": false,
         "commerce_description": "This plugin does not sell products or process payments."
       },
